@@ -1,12 +1,23 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
+import MyPage from './components/mypage/Mypage';
+import Login from './pages/Login';
+import SuggestionBoard from './components/board/SuggestionBoard';
+// import DormNotice from './components/board/DormNotice';
+import DeliveryService from './components/alarm/DeliveryService';
+import Starting from './pages/Starting';
 
 const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
                 {/* 루트 경로 */}
-                <Route index element={<Home />}></Route>
+                <Route path="/" element={<Starting />}></Route>
+                <Route path="/mypage" element={<MyPage />}></Route>
+                <Route path="/login" element={<Login />}></Route>
+                <Route path="/suggestionboard" element={<SuggestionBoard />}></Route>
+                {/* <Route path="/notice" element={<DormNotice />}></Route> */}
+                <Route path="/delivery" element={<DeliveryService />}></Route>
             </Routes>
         </BrowserRouter>
     );
