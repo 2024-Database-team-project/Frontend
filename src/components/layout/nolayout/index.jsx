@@ -1,10 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
 
-const Layout = () => {
+const NoLayout = () => {
     return (
-        <div className="flex h-screen">
-            <Sidebar />
+        <div className="h-screen relative">
             <div className="max-w-md h-full flex flex-col mx-auto">
                 <Outlet />
             </div>
@@ -12,4 +10,4 @@ const Layout = () => {
     );
 };
 
-export default Layout;
+export default NoLayout;

@@ -2,6 +2,7 @@ import ajouIcon from '../assets/ajou_symbol.png';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import Api from '../api/api';
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -23,10 +24,6 @@ function LoginPage() {
             setId(value);
         } else if (name === 'password') {
             setPassword(value);
-
-            if (value.length < 6) {
-                errorMessage = '비밀번호는 최소 6자 이상이어야 합니다.';
-            }
         }
 
         setError(errorMessage);
@@ -45,19 +42,18 @@ function LoginPage() {
 
         try {
             // 백엔드 로그인 API 호출
-            const response = await axios.post('https://your-api-url.com/login', {
+            const response = await Api.post('/dorm/login', {
                 id,
                 password,
             });
 
             // 로그인 성공 시 처리
             if (response.status === 200) {
-                // 예: 토큰 저장
                 const { token } = response.data;
                 localStorage.setItem('authToken', token);
 
                 // 홈 페이지로 이동
-                navigate('/');
+                navigate(`/Home`);
             }
         } catch (err) {
             // 로그인 실패 시 에러 메시지 처리

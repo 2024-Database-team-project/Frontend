@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Api from '../../api/api';
 
 // 생활관 옵션 정의
 const DORMITORY_OPTIONS = ['남제관', '용지관', '광교관', '화홍관', '국제학사', '일신관'];
@@ -20,7 +21,7 @@ const SuggestionBoard = () => {
     useEffect(() => {
         const fetchSuggestions = async () => {
             try {
-                const response = await axios.get('/api/suggestions');
+                const response = await Api.get('/dorm/request');
                 setSuggestions(response.data);
             } catch (error) {
                 console.error('게시글 불러오기 실패:', error);

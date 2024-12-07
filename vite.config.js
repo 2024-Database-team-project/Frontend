@@ -27,4 +27,14 @@ export default defineConfig({
             },
         }),
     ],
+    server: {
+        proxy: {
+            '/api': {
+                target: 'https://1b4d-175-195-197-184.ngrok-free.app',
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+        },
+    },
 });

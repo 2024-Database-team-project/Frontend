@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Api from '../../api/api';
 
 const DeliveryService = () => {
     const [deliveries, setDeliveries] = useState([]);
@@ -11,7 +12,7 @@ const DeliveryService = () => {
     useEffect(() => {
         const fetchDeliveries = async () => {
             try {
-                const response = await axios.get('/api/deliveries');
+                const response = await Api.get('/api/deliveries');
                 setDeliveries(response.data);
                 setLoading(false);
             } catch (err) {

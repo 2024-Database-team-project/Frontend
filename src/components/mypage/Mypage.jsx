@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import Api from '../../api/api';
 
 const MyPage = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [penaltyHistory, setPenaltyHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userId] = useParams(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                // 사용자 정보 및 벌점 정보 동시 로드
-                const [userResponse, penaltyResponse] = await Promise.all([
-                    axios.get('/api/user/profile'),
-                    axios.get('/api/user/penalties'),
-                ]);
+                const [userResponse, penaltyResponse] = await Promise.all([Api.get(`/user/profile`)]);
 
                 setUserInfo(userResponse.data);
                 setPenaltyHistory(penaltyResponse.data);
@@ -27,7 +26,7 @@ const MyPage = () => {
         };
 
         fetchUserData();
-    }, []);
+    }, [userId]);
 
     // 총 벌점 계산 함수
     const calculateTotalPenalty = () => {
