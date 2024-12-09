@@ -7,6 +7,7 @@ import SuggestionBoard from './components/board/SuggestionBoard';
 import DeliveryService from './components/alarm/DeliveryService';
 import Starting from './pages/Starting';
 import Layout from './components/layout';
+import DormNotice from './components/board/DormNotice';
 
 const Router = () => {
     return (
@@ -21,7 +22,7 @@ const Router = () => {
                     <Route path="/home" element={<Home />}></Route>
                     <Route path="/mypage" element={<MyPage />}></Route>
                     <Route path="/suggestionboard" element={<SuggestionBoard />}></Route>
-                    {/* <Route path="/notice" element={<DormNotice />}></Route> */}
+                    <Route path="/notice" element={<DormNotice />}></Route>
                     <Route path="/delivery" element={<DeliveryService />}></Route>
                 </Route>
             </Routes>

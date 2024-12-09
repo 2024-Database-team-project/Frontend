@@ -3,6 +3,10 @@ import axios from 'axios';
 const Api = axios.create({
     baseURL: '/api', // Vite의 프록시를 사용하도록 변경
     withCredentials: true,
+    headers: {
+        'Content-Type': `application/json`,
+        'ngrok-skip-browser-warning': '69420',
+    },
 });
 
 Api.interceptors.request.use(

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import Api from '../../api/api';
 
-const DormNotice = () => {
+const DormNotice = ({ isMainPage }) => {
     const [notices, setNotices] = useState([]);
     const [selectedNotice, setSelectedNotice] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1); // 페이지 번호
+    const noticesPerPage = isMainPage ? 5 : 10; // 메인 화면에서는 5개, 공지사항 페이지에서는 10개
 
     useEffect(() => {
         const fetchNotices = async () => {
@@ -42,19 +43,28 @@ const DormNotice = () => {
     };
 
     const goBackToList = () => {
-        setSelectedNotice;
+        setSelectedNotice(null);
     };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    // 페이지네이션 계산
+    const startIndex = (currentPage - 1) * noticesPerPage;
+    const paginatedNotices = notices.slice(startIndex, startIndex + noticesPerPage);
+    const totalPages = Math.ceil(notices.length / noticesPerPage);
 
     if (selectedNotice) {
         return (
             <div className="p-4">
                 <div className="bg-white shadow rounded-lg p-6">
-                    <h2 className="text-2xl font-bold mb-4">{selectedNotice.title}</h2>
+                    <h2 className="text-2xl font-bold mb-4">{selectedNotice.noticeTitle}</h2>
                     <div className="mb-4 text-gray-600">
-                        <span className="ml-4">작성자: {selectedNotice.author}</span>
-                        <span className="ml-4">작성시간: {selectedNotice.date}</span>
+                        <span className="ml-4">작성자: {selectedNotice.noticeWriter}</span>
+                        <span className="ml-4">작성시간: {selectedNotice.noticeDate}</span>
                     </div>
-                    <div className="whitespace-pre-wrap">{selectedNotice}</div>
+                    <div className="whitespace-pre-wrap">{selectedNotice.noticeContent}</div>
                     <button
                         onClick={goBackToList}
                         className="mt-4 bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
@@ -79,13 +89,13 @@ const DormNotice = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {notices.map((notice, index) => (
+                    {paginatedNotices.map((notice) => (
                         <tr
                             key={notice.noticeIdx}
                             className="hover:bg-gray-50 cursor-pointer"
                             onClick={() => viewNotice(notice)}
                         >
-                            <td className="border p-2">{index + 1}</td>
+                            <td className="border p-2">{notice.noticeIdx}</td>
                             <td className="border p-2">{notice.noticeWriter}</td>
                             <td className="border p-2">{notice.noticeTitle}</td>
                             <td className="border p-2">{notice.noticeDate}</td>
@@ -93,6 +103,25 @@ const DormNotice = () => {
                     ))}
                 </tbody>
             </table>
+
+            {/* 페이지네이션 */}
+            {!isMainPage && (
+                <div className="flex justify-center mt-4">
+                    {Array.from({ length: totalPages }, (_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => handlePageChange(index + 1)}
+                            className={`px-4 py-2 mx-1 rounded ${
+                                currentPage === index + 1
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-gray-300 text-black hover:bg-gray-400'
+                            }`}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
