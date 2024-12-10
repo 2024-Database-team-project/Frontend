@@ -58,7 +58,7 @@ const SuggestionBoard = ({ isMainPage }) => {
 
             setSuggestions([...suggestions, response.data]);
             setIsWriteMode(false);
-            setNewSuggestion({ studentID: '', requestTitle: '', requestContent: '', requestDate: '' });
+            setNewSuggestion({ studentName: '', requestTitle: '', requestContent: '', requestDate: '' });
         } catch (error) {
             console.error('게시글 작성 실패:', error);
         }
@@ -144,15 +144,14 @@ const SuggestionBoard = ({ isMainPage }) => {
                 <div className="bg-white shadow rounded-lg p-6">
                     <h2 className="text-2xl font-bold mb-4">{selectedSuggestion.requestTitle}</h2>
                     <div className="mb-4 text-gray-600">
-                        <span>생활관: {selectedSuggestion.dormitory}</span>
-                        <span className="ml-4">작성자: {selectedSuggestion.author}</span>
+                        <span className="ml-4">작성자: {selectedSuggestion.studentName}</span>
                         <span className="ml-4">작성시간: {selectedSuggestion.requestDate}</span>
                     </div>
                     <div className="whitespace-pre-wrap">{selectedSuggestion.requestContent}</div>
                     {loadingResponse ? (
                         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
                     ) : response ? (
-                        <div className="whitespace-pre-wrap bg-gray-100 p-4 rounded">
+                        <div className="whitespace-pre-wrap bg-gray-100 p-4 mt-8 rounded">
                             <h3 className="text-lg font-bold mb-2">관리자 답변</h3>
                             <p>{response.responseContent}</p>
                             <p className="text-sm text-gray-600 mt-2">답변 날짜: {response.responseDate}</p>
@@ -196,7 +195,7 @@ const SuggestionBoard = ({ isMainPage }) => {
                         >
                             <td className="border p-2">{suggestion.requestIdx}</td>
                             <td className="border p-2">{suggestion.requestTitle}</td>
-                            <td className="border p-2">{suggestion.studentID}</td>
+                            <td className="border p-2">{suggestion.studentName}</td>
                             <td className="border p-2">{suggestion.requestDate}</td>
                         </tr>
                     ))}

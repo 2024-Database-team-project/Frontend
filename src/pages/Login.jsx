@@ -46,6 +46,7 @@ function LoginPage() {
                 navigate('/home');
             } else {
                 setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+                alert('아이디 또는 비밀번호가 올바르지 않습니다.');
             }
         }, 1000); // 로딩 효과를 위해 약간의 지연을 추가
     };
