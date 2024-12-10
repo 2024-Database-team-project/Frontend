@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Api from '../../api/api';
 
 const MyPage = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -7,56 +8,79 @@ const MyPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchUserData = async () => {
-        try {
-            // 하드코딩된 데이터로 테스트
-            const mockData = {
-                username: '이상민',
-                major: '기계공학과',
-                studentID: '202327143',
-                semester: '2024-1',
-                roomNumber: '308',
-                dormType: '남제관',
-            };
+    // const fetchUserData = async () => {
+    //     try {
+    //         // 하드코딩된 데이터로 테스트
+    //         const mockData = {
+    //             username: '이상민',
+    //             major: '기계공학과',
+    //             studentID: '202327143',
+    //             semester: '2024-1',
+    //             roomNumber: '308',
+    //             dormType: '남제관',
+    //         };
 
-            setUserInfo({
-                name: mockData.username,
-                department: mockData.major,
-                studentId: mockData.studentID,
-                dormitory: mockData.dormType,
-                roomNumber: mockData.roomNumber,
-            });
+    //         setUserInfo({
+    //             name: mockData.username,
+    //             department: mockData.major,
+    //             studentId: mockData.studentID,
+    //             dormitory: mockData.dormType,
+    //             roomNumber: mockData.roomNumber,
+    //         });
 
-            // 더미 벌점 내역 데이터 설정
-            const mockPenaltyHistory = [
-                {
-                    date: '2024-12-08',
-                    points: 20,
-                    reason: '임의로 호실 변경',
-                },
-            ];
-            setPenaltyHistory(mockPenaltyHistory);
+    //         // 더미 벌점 내역 데이터 설정
+    //         const mockPenaltyHistory = [
+    //             {
+    //                 date: '2024-12-08',
+    //                 points: 20,
+    //                 reason: '임의로 호실 변경',
+    //             },
+    //         ];
+    //         setPenaltyHistory(mockPenaltyHistory);
 
-            // 기숙사 점수 더미 데이터 설정
-            const mockDormitoryScore = {
-                성적: 60,
-                사생: 30,
-                봉사: 5,
-                법정필수교육: 5,
-            };
-            setDormitoryScore(mockDormitoryScore);
+    //         // 기숙사 점수 더미 데이터 설정
+    //         const mockDormitoryScore = {
+    //             성적: 60,
+    //             사생: 30,
+    //             봉사: 5,
+    //             법정필수교육: 5,
+    //         };
+    //         setDormitoryScore(mockDormitoryScore);
 
-            setLoading(false);
-        } catch (err) {
-            console.error('데이터 로딩 중 오류:', err);
-            setError('정보를 불러오는 중 오류가 발생했습니다.');
-            setLoading(false);
-        }
-    };
+    //         setLoading(false);
+    //     } catch (err) {
+    //         console.error('데이터 로딩 중 오류:', err);
+    //         setError('정보를 불러오는 중 오류가 발생했습니다.');
+    //         setLoading(false);
+    //     }
+    // };
 
+    // useEffect(() => {
+    //     fetchUserData();
+    // }, []);
     useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userResponse = await Api.get(`/user/profile`);
+
+                setUserInfo({
+                    name: userResponse.data.username,
+                    department: userResponse.data.major,
+                    studentId: userResponse.data.studentID,
+                    dormitory: userResponse.data.dormType + ' Dormitory',
+                    roomNumber: userResponse.data.roomNumber,
+                });
+
+                setPenaltyHistory([]);
+                setLoading(false);
+            } catch (err) {
+                console.error('데이터 로딩 중 오류:', err);
+                setError('정보를 불러오는 중 오류가 발생했습니다.');
+                setLoading(false);
+            }
+        };
         fetchUserData();
-    }, []);
+    });
 
     // 총 벌점 계산 함수
     const calculateTotalPenalty = () => {

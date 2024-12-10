@@ -174,9 +174,9 @@ const SuggestionBoard = ({ isMainPage }) => {
     return (
         <div className="w-full p-4">
             <h2 className="text-2xl font-bold mb-4"> 건의사항 게시판</h2>
-            {/* <button onClick={switchToWriteMode} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <button onClick={switchToWriteMode} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                 글쓰기
-            </button> */}
+            </button>
             <table className="w-full border-collapse">
                 <thead>
                     <tr className="bg-gray-100">
