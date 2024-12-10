@@ -4,8 +4,8 @@ const Sidebar = () => {
     const navigate = useNavigate();
     const handleLogout = () => {
         // localStorage에서 토큰 제거
-        localStorage.removeItem('authToken');
-
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         // 로그아웃 후 메인 페이지로 이동
         navigate('/');
     };

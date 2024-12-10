@@ -1,7 +1,7 @@
 import ajouIcon from '../assets/ajou_symbol.png';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
+
 import Api from '../api/api';
 
 function LoginPage() {
@@ -10,11 +10,6 @@ function LoginPage() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [showPW, setShowPW] = useState(false);
-
-    const togglePasswordVisibility = () => {
-        setShowPW(!showPW);
-    };
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -33,7 +28,8 @@ function LoginPage() {
         e.preventDefault();
         setError('');
 
-        if (isLoading || id === '' || password === '') {
+        // Validate input fields
+        if (id.trim() === '' || password.trim() === '') {
             setError('모든 필드를 채워주세요.');
             return;
         }
@@ -47,17 +43,20 @@ function LoginPage() {
                 password,
             });
 
-            // 로그인 성공 시 처리
-            if (response.status === 200) {
-                const { token } = response.data;
-                localStorage.setItem('authToken', token);
-
-                // 홈 페이지로 이동
-                navigate(`/Home`);
+            if (response.data) {
+                localStorage.setItem('userId', response.data.userId);
+                navigate('/home');
+            } else {
+                setError(response.data.message || '로그인에 실패했습니다.');
             }
         } catch (err) {
-            // 로그인 실패 시 에러 메시지 처리
-            setError(err.response?.data?.message || '로그인에 실패했습니다.');
+            if (err.response) {
+                setError(err.response.data.message || '로그인에 실패했습니다.');
+            } else if (err.request) {
+                setError('서버와 연결할 수 없습니다. 네트워크 연결을 확인해주세요.');
+            } else {
+                setError('로그인 중 예상치 못한 오류가 발생했습니다.');
+            }
         } finally {
             setLoading(false);
         }
@@ -88,20 +87,13 @@ function LoginPage() {
                     </label>
                     <div className="relative">
                         <input
-                            type={showPW ? 'text' : 'password'}
+                            type={'password'}
                             name="password"
-                            placeholder="비밀번호를 입력해주세요 (6자리 이상)"
+                            placeholder="비밀번호를 입력해주세요"
                             value={password}
                             onChange={onChange}
                             className="w-full p-3 border rounded-md focus:ring focus:ring-blue-300 text-black"
                         />
-                        <button
-                            type="button"
-                            onClick={togglePasswordVisibility}
-                            className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-                        >
-                            {showPW ? '🙈' : '👁️'}
-                        </button>
                     </div>
                 </div>
                 <button

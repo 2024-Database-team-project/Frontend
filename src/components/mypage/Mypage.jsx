@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import Api from '../../api/api';
 
 const MyPage = () => {
@@ -8,15 +6,21 @@ const MyPage = () => {
     const [penaltyHistory, setPenaltyHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [userId] = useParams(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const [userResponse, penaltyResponse] = await Promise.all([Api.get(`/user/profile`)]);
+                const userResponse = await Api.get(`/user/profile`);
 
-                setUserInfo(userResponse.data);
-                setPenaltyHistory(penaltyResponse.data);
+                setUserInfo({
+                    name: userResponse.data.username,
+                    department: userResponse.data.major,
+                    studentId: userResponse.data.studentID,
+                    dormitory: userResponse.data.dormType + ' Dormitory',
+                    roomNumber: userResponse.data.roomNumber,
+                });
+
+                setPenaltyHistory([]);
                 setLoading(false);
             } catch (err) {
                 console.error('데이터 로딩 중 오류:', err);
@@ -26,7 +30,38 @@ const MyPage = () => {
         };
 
         fetchUserData();
-    }, [userId]);
+    }, []);
+
+    // const fetchUserData = async () => {
+    //     try {
+    //         // 하드코딩된 데이터로 테스트
+    //         const mockData = {
+    //             username: '이상민',
+    //             major: '컴퓨터공학',
+    //             studentID: 'S001',
+    //             semester: '2024-1',
+    //             roomNumber: '101',
+    //             dormType: 'Male',
+    //         };
+
+    //         setUserInfo({
+    //             name: mockData.username,
+    //             department: mockData.major,
+    //             studentId: mockData.studentID,
+    //             dormitory: mockData.dormType + ' Dormitory',
+    //             roomNumber: mockData.roomNumber,
+    //         });
+
+    //         setLoading(false);
+    //     } catch (err) {
+    //         console.error('데이터 로딩 중 오류:', err);
+    //         setError('정보를 불러오는 중 오류가 발생했습니다.');
+    //         setLoading(false);
+    //     }
+    // };
+    // useEffect(() => {
+    //     fetchUserData();
+    // }, []);
 
     // 총 벌점 계산 함수
     const calculateTotalPenalty = () => {
