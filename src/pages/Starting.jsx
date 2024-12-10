@@ -8,7 +8,7 @@ const Starting = () => {
         <div className=" flex flex-col items-center justify-center bg-white text-gray-800 px-10  ">
             {/* Logo */}
             <img src={ajouIcon} alt="Logo" className="w-40 mb-10 mt-20" />
-            <h1 className=" mb-20 ">어서오세요 아주대학교 기숙사 어플리케이션 입니다.</h1>
+            <h1 className=" mb-20 ">아주대학교 기숙사 어플리케이션 Dormify 입니다.</h1>
             {/* Login Button */}
             <button
                 onClick={() => navigate('/login')}

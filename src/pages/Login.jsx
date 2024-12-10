@@ -11,6 +11,8 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const dummyUsers = [{ id: 'ajou123', password: 'password123', name: '이상민' }];
+
     const onChange = (e) => {
         const { name, value } = e.target;
         let errorMessage = '';
@@ -23,12 +25,9 @@ function LoginPage() {
 
         setError(errorMessage);
     };
-
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        setError('');
 
-        // Validate input fields
         if (id.trim() === '' || password.trim() === '') {
             setError('모든 필드를 채워주세요.');
             return;
@@ -36,31 +35,58 @@ function LoginPage() {
 
         setLoading(true);
 
-        try {
-            // 백엔드 로그인 API 호출
-            const response = await Api.post('/dorm/login', {
-                id,
-                password,
-            });
+        // 더미 데이터와 비교
+        const user = dummyUsers.find((user) => user.id === id && user.password === password);
 
-            if (response.data) {
-                localStorage.setItem('userId', response.data.userId);
+        setTimeout(() => {
+            setLoading(false);
+            if (user) {
+                localStorage.setItem('userId', user.id);
+                alert(`환영합니다, ${user.name}님!`);
                 navigate('/home');
             } else {
-                setError(response.data.message || '로그인에 실패했습니다.');
+                setError('아이디 또는 비밀번호가 올바르지 않습니다.');
             }
-        } catch (err) {
-            if (err.response) {
-                setError(err.response.data.message || '로그인에 실패했습니다.');
-            } else if (err.request) {
-                setError('서버와 연결할 수 없습니다. 네트워크 연결을 확인해주세요.');
-            } else {
-                setError('로그인 중 예상치 못한 오류가 발생했습니다.');
-            }
-        } finally {
-            setLoading(false);
-        }
+        }, 1000); // 로딩 효과를 위해 약간의 지연을 추가
     };
+
+    // const onSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setError('');
+
+    //     // Validate input fields
+    //     if (id.trim() === '' || password.trim() === '') {
+    //         setError('모든 필드를 채워주세요.');
+    //         return;
+    //     }
+
+    //     setLoading(true);
+
+    //     try {
+    //         // 백엔드 로그인 API 호출
+    //         const response = await Api.post('/dorm/login', {
+    //             id,
+    //             password,
+    //         });
+
+    //         if (response.data) {
+    //             localStorage.setItem('userId', response.data.userId);
+    //             navigate('/home');
+    //         } else {
+    //             setError(response.data.message || '로그인에 실패했습니다.');
+    //         }
+    //     } catch (err) {
+    //         if (err.response) {
+    //             setError(err.response.data.message || '로그인에 실패했습니다.');
+    //         } else if (err.request) {
+    //             setError('서버와 연결할 수 없습니다. 네트워크 연결을 확인해주세요.');
+    //         } else {
+    //             setError('로그인 중 예상치 못한 오류가 발생했습니다.');
+    //         }
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     return (
         <div className="flex justify-center items-center min-h-screen">

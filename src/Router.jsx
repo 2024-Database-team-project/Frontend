@@ -8,6 +8,8 @@ import DeliveryService from './components/alarm/DeliveryService';
 import Starting from './pages/Starting';
 import Layout from './components/layout';
 import DormNotice from './components/board/DormNotice';
+import Laundry from './components/alarm/Laundry';
+import Penalty from './components/board/Penalty';
 
 const Router = () => {
     return (
@@ -23,7 +25,9 @@ const Router = () => {
                     <Route path="/mypage" element={<MyPage />}></Route>
                     <Route path="/suggestionboard" element={<SuggestionBoard />}></Route>
                     <Route path="/notice" element={<DormNotice />}></Route>
+                    <Route path="/laundary" element={<Laundry />}></Route>
                     <Route path="/delivery" element={<DeliveryService />}></Route>
+                    <Route path="/penalty" element={<Penalty />}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>
